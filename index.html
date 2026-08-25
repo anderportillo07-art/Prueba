@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Especial</title>
+    <style>
+        :root {
+            --primary-color: #8b5cf6;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            max-width: 450px;
+            width: 100%;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .badge {
+            background-color: #f3e8ff;
+            color: var(--primary-color);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin: 10px 0;
+            color: #0f172a;
+        }
+
+        .guest-name {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #64748b;
+        }
+
+        .pass-info {
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: block;
+            margin-top: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .btn-whatsapp:hover {
+            background-color: #1da851;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <span class="badge">NUESTRA BODA</span>
+        <h1 id="greeting">¡Estás invitado!</h1>
+        <p>Queremos que seas parte de este día tan especial para nosotros.</p>
+        
+        <div class="pass-info">
+            Pases reservados: <span id="guest-passes">1</span>
+        </div>
+
+        <p><strong>Fecha:</strong> 15 de Noviembre<br>
+        <strong>Lugar:</strong> San Salvador</p>
+
+        <!-- Botón que redirige a WhatsApp con mensaje personalizado -->
+        <a id="btn-confirm" class="btn-whatsapp" href="#" target="_blank">
+            Confirmar Asistencia por WhatsApp
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // 1. Número de WhatsApp del anfitrión (con código de país, ej. 503 para El Salvador)
+            const hostPhoneNumber = "50370000000"; 
+
+            // 2. Obtener los parámetros de la URL
+            const params = new URLSearchParams(window.location.search);
+            const nameParam = params.get('nombre');
+            const passesParam = params.get('pases');
+
+            // 3. Establecer valores por defecto en caso de que falten en la URL
+            const guestName = nameParam ? nameParam.trim() : "Estimado/a invitado/a";
+            const guestPasses = passesParam ? passesParam.trim() : "1";
+
+            // 4. Inyectar datos en el HTML
+            document.getElementById('greeting').innerHTML = `¡Hola, <span class="guest-name">${guestName}</span>!`;
+            document.getElementById('guest-passes').textContent = guestPasses;
+
+            // 5. Construir enlace dinámico para WhatsApp
+            const message = `¡Hola! Confirmó mi asistencia. Soy ${guestName} y utilizaré ${guestPasses} pase(s).`;
+            const whatsappUrl = `https://wa.me/${hostPhoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            document.getElementById('btn-confirm').setAttribute('href', whatsappUrl);
+        });
+    </script>
+
+</body>
+</html>
